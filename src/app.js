@@ -1,14 +1,16 @@
-import express from express;
-
-
-const app = express()
+import express from "express";
 
 
 import userRoutes from './routes/user.routes.js'
 
 
+const app = express()
 
 
-//routes declartion 
+
+
+
 
 app.use("/", userRoutes);
+
+export default app;
