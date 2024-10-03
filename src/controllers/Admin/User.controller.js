@@ -60,6 +60,19 @@ const hello = async () => {
     }
 };
 
+const login = asyncHandler(async (req,res)=>{
+
+    const{email,password} = req.body;
+
+    if(!email||!password){
+     throw new ApiError(409, " email or password required");
+
+    }
+     const user = User.findOne(email);
+     user.isPasswordCorrect(password)
+
+} )
+
 export {
     hello,
     register,

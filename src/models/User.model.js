@@ -12,7 +12,7 @@ const UserSchema = new Schema(
     email: {
       type: String,
       required: true,
-      unique: true, // Fix typo
+      unique: true, 
     },
     phone: {
       type: Number,
@@ -42,7 +42,7 @@ const UserSchema = new Schema(
 UserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   
-  this.password = await bcrypt.hash(this.password, 10); // Fix typo bcrypt.has to bcrypt.hash
+  this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
