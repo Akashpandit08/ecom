@@ -62,6 +62,8 @@ const hello = async () => {
 
 const login = asyncHandler(async (req,res)=>{
 
+
+
     const{email,password} = req.body;
 
     if(!email||!password){
@@ -69,11 +71,41 @@ const login = asyncHandler(async (req,res)=>{
 
     }
      const user = User.findOne(email);
-     user.isPasswordCorrect(password)
+
+     if(!user){
+        throw new ApiError(409, "User not found ");
+
+     }
+     const isPasswordCorrect =  await user.isPasswordCorrect(password);
+      if(!isPasswordCorrect){
+         throw new ApiError(409,"password not correct")
+      }
+
+      const accessToken = user.generateAccessToken();
+    const refreshToken = user.generateRefreshToken();
+
+    res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,      
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',    
+        maxAge: 7 * 24 * 60 * 60 * 1000 
+    });
+
+    res.status(200).json({
+        message: "Login successful",
+        accessToken,  // Send the JWT access token
+        user: {
+            id: user._id,
+            email: user.email,
+            username: user.username // Add any other details you want to send
+        }
+    });
+
 
 } )
 
 export {
     hello,
+    login,
     register,
 };
