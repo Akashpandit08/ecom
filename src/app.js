@@ -31,7 +31,7 @@ import adminRouter from "./routes/Admin/admin.routes.js";
 
 
 
-
+app.use('/uploads', express.static('uploads'));
 app.use("/", userRoutes);
 
 app.use("/api/v1/admin",adminRouter)

@@ -4,6 +4,8 @@ import asyncHandler from "../../utils/asyncHandler.js";
 import User from "../../models/User.model.js";
 import ApiError from "../../utils/ApiError.js";  
 import ApiResponse from "../../utils/ApiResponse.js";
+import { uploadSingleImage } from '../helpers/uploadHelper.js';
+
 
 const register = asyncHandler(async (req, res) => {
     const { username, email, phone, password } = req.body;
@@ -51,19 +53,8 @@ const register = asyncHandler(async (req, res) => {
     );
 });
 
-const hello = async () => {
-    try {
-        const hello = "My name is Akash";
-        return { hello };
-    } catch (error) {
-        throw new ApiError(500, "Something went wrong while generating refresh and access token");
-    }
-};
 
 const login = asyncHandler(async (req,res)=>{
-
-
-
     const{email,password} = req.body;
 
     if(!email||!password){
@@ -104,10 +95,32 @@ const login = asyncHandler(async (req,res)=>{
     });
 
 
-} )
+});
+const logout = asyncHandler(async (req, res) => {
+    const userId = req.userId;
+
+    if (!userId) {
+        return res.status(401).json({ message: 'Unauthorized: No user session found' });
+    }
+
+ 
+    res.clearCookie('refreshToken', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+    });
+
+  
+
+    res.status(200).json({ message: 'Logout successful' });
+});
+
+
+
 
 export {
-    hello,
+    
     login,
     register,
+    logout,
 };
