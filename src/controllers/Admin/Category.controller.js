@@ -1,13 +1,16 @@
-import { json } from "body-parser";
+
 import Category from "../../models/Category.model.js";
 import asyncHandler from "../../utils/asyncHandler.js";
 
 
-const createCategory = asyncHandler(async(res,req,)=>{
+const createCategory = asyncHandler(async(req,res)=>{
      
     try {
+       
         const { name, description } = req.body;
+
         const imagePath = req.file ? req.file.path : null;
+        console.log(req.body);
 
         if (!name) {
             return res.status(400).json({ message: 'Name is required' });
