@@ -10,7 +10,7 @@ const createCategory = asyncHandler(async(req,res)=>{
         const { name, description } = req.body;
 
         const imagePath = req.file ? req.file.path : null;
-        console.log(req.body);
+        console.log(req.body.categoryImage ,req.file);
 
         if (!name) {
             return res.status(400).json({ message: 'Name is required' });
