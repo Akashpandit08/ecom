@@ -43,14 +43,16 @@ const register = asyncHandler(async (req, res) => {
     if (!createdUser) {
         throw new ApiError(500, "Something went wrong while registering the user");
     }
+   
+
+    res.status(200).json({
+        message:  "User created successfully",
+
+        createdUser
+    });
 
   
-    return ApiResponse(
-        res,
-        200,
-        "Admin created successfully",
-        createdUser
-    );
+
 });
 
 
